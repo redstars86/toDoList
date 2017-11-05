@@ -1,0 +1,72 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="jquery-ui-1.12.1.custom/jquery-ui.js"></script>
+<link rel="stylesheet" type="text/css" href="jquery-ui-1.12.1.custom/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="style.css">
+<script src="jquery.min.js"></script>
+<script src="jquery.mobile-1.4.5.js"></script>
+<script>
+$(document).ready(function () {
+    var i = 0;
+    for (i = 0; i < localStorage.length; i++) {
+        var key = "task-" + i;
+		key1 = key;
+		console.log(key);
+        $('#tasks').append("<li id='" + key1+ "'>" + localStorage.getItem(key1) + "</li>");
+    }
+    $('#delete').click(function () {
+        localStorage.clear();
+		$( "#tasks" ).slideUp("slow");
+    });
+    $('#entryForm').submit(function () {
+        if ($('#taskInput').val() !== "") {
+            var key = "task-" + i;
+			key1 = key;
+            var taskMessage = $('#taskInput').val();
+            localStorage.setItem(key1, taskMessage);
+            $('#tasks').append("<li class='task' id='" + key1 + "'>" + taskMessage + "</li>");
+            var task = $('#' + key1);
+            task.css('display', 'none');
+            task.slideDown();
+            $('#taskInput').val("");
+            i++;
+        }
+        return false;
+    });
+
+    $('#tasks').on("click", "li", function (event) {
+        self = $(this);
+        key = self.attr('id');
+        localStorage.removeItem(key1);
+        self.slideUp('slow', function () {
+            self.remove();
+        });
+
+    });
+
+
+});
+</script>
+<title>Untitled Document</title>
+</head>
+
+<body>
+<div id="container">
+    <header>
+         <h1>Task List</h1>
+      <button class="ui-button ui-widget ui-corner-all" id="delete">Delete All</button>
+
+    </header>
+    <section id="taskContainer">
+        <div id="formContainer">
+            <form id="entryForm">
+                <input id="taskInput" placeholder="Enter Task" autocomplete="off"/>
+            </form>
+        </div>
+        <ul id="tasks"></ul>
+    </section>
+</div>
+</body>
+</html>
